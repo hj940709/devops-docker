@@ -1,0 +1,23 @@
+version: '3.5'  
+
+services: 
+    frontend-example-docker: 
+      image: frontend-example-docker
+      build: ../1.10/
+      ports: 
+        - 5000:5000
+      
+    backend-example-docker:
+      image: backend-example-docker
+      build: ../1.11/
+      ports: 
+        - 8000:8000
+      environment:
+        - REDIS=redis
+        - REDIS_PORT=6379
+    
+    redis:
+      image: redis
+      restart: unless-stopped
+    
+
