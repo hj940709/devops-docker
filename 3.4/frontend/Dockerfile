@@ -1,16 +1,16 @@
-FROM node:alpine
+FROM ubuntu:16.04
 
-
-ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
-ENV PATH=$PATH:/home/node/.npm-global/bin
-
-RUN apk add --no-cache git && \
+RUN apt-get update && apt-get install -y curl git && \
+    curl -sL https://deb.nodesource.com/setup_10.x | bash && \
+    apt-get install -y nodejs && \
     git clone https://github.com/docker-hy/frontend-example-docker.git && \
-    apk del git
+    apt-get purge -y --auto-remove curl git && \
+    rm -rf /var/lib/apt/lists/* && \ 
+    useradd -m app 
 
 WORKDIR /frontend-example-docker
 RUN chown -R node .
-USER node
+USER app
 RUN npm install
 EXPOSE 5000
 CMD ["npm", "start" ]

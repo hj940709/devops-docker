@@ -1,4 +1,4 @@
-FROM node:alpine as build-stage
+FROM node:alpine
 
 
 ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
@@ -11,9 +11,6 @@ RUN apk add --no-cache git && \
 WORKDIR /frontend-example-docker
 RUN chown -R node .
 USER node
-RUN npm install && npm run build
-
-FROM nginx
-COPY --from=build-stage /frontend-example-docker/dist/ /usr/share/nginx/html
-#COPY ./nginx.conf  /etc/nginx
-EXPOSE 80
+RUN npm install
+EXPOSE 5000
+CMD ["npm", "start" ]
